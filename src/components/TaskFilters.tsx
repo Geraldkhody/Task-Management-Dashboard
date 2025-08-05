@@ -9,7 +9,7 @@ interface TaskFiltersProps {
 export function TaskFilters({ filterStatus, onFilterChange, taskCount }: TaskFiltersProps) {
   return (
     <div className="mb-8">
-      <div className="flex items-center justify-between">
+      <div className=" items-center justify-between">
         <div className="flex items-center gap-4">
           <h2 className="text-lg font-semibold text-gray-900">Tasks</h2>
           <div className="flex items-center gap-2">

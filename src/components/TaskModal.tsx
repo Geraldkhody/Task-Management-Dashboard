@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { Task, NewTask } from '../types'
+import { X } from 'lucide-react'
 
 interface TaskModalProps {
   isOpen: boolean
@@ -61,9 +62,7 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, mode }: TaskModalPr
             className="text-gray-400 hover:text-gray-600"
             aria-label="Close modal"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="w-6 h-6" />
           </button>
         </div>
         
@@ -129,7 +128,7 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, mode }: TaskModalPr
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200"
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-black rounded-lg font-medium transition-colors duration-200"
             >
               {mode === 'add' ? 'Add Task' : 'Update Task'}
             </button>
