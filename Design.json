@@ -1,0 +1,244 @@
+{
+    "designStyle": {
+      "overallAesthetic": "Clean, modern, professional, minimalist, and functional with a focus on usability.",
+      "visualHierarchy": "Clear and well-defined, using subtle shadows, background tints, and typography to distinguish elements.",
+      "consistency": "High consistency in component styling, spacing, and typography across the interface.",
+      "responsivenessConsiderations": "Layout suggests adaptability with clear sections, likely using a flexible grid system. Elements are well-proportioned for various screen sizes."
+    },
+    "colorPalette": {
+      "primaryBrandColor": "#3B82F6",
+      "secondaryAccentColor": "#60A5FA",
+      "neutralColors": {
+        "backgroundLight": "#FFFFFF",
+        "backgroundMedium": "#F8FAFC",
+        "backgroundDark": "#E2E8F0",
+        "border": "#E2E8F0",
+        "textPrimary": "#1F2937",
+        "textSecondary": "#6B7280",
+        "textPlaceholder": "#9CA3AF"
+      },
+      "statusColors": {
+        "success": "#10B981",
+        "warning": "#F59E0B",
+        "danger": "#EF4444",
+        "info": "#60A5FA"
+      },
+      "shadows": {
+        "light": "0px 1px 3px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.05)",
+        "medium": "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.06)"
+      }
+    },
+    "typography": {
+      "fontFamily": "Inter, sans-serif",
+      "textStyles": {
+        "heading1": {
+          "fontSize": "1.5rem",
+          "fontWeight": "600",
+          "lineHeight": "2rem",
+          "color": "textPrimary"
+        },
+        "heading2": {
+          "fontSize": "1.125rem",
+          "fontWeight": "600",
+          "lineHeight": "1.75rem",
+          "color": "textPrimary"
+        },
+        "bodyTextLarge": {
+          "fontSize": "1rem",
+          "fontWeight": "400",
+          "lineHeight": "1.5rem",
+          "color": "textPrimary"
+        },
+        "bodyTextMedium": {
+          "fontSize": "0.875rem",
+          "fontWeight": "400",
+          "lineHeight": "1.25rem",
+          "color": "textPrimary"
+        },
+        "bodyTextSmall": {
+          "fontSize": "0.75rem",
+          "fontWeight": "400",
+          "lineHeight": "1rem",
+          "color": "textSecondary"
+        },
+        "label": {
+          "fontSize": "0.875rem",
+          "fontWeight": "500",
+          "lineHeight": "1.25rem",
+          "color": "textPrimary"
+        },
+        "buttonText": {
+          "fontSize": "0.875rem",
+          "fontWeight": "600",
+          "lineHeight": "1.25rem",
+          "color": "white"
+        },
+        "linkText": {
+          "fontSize": "0.875rem",
+          "fontWeight": "500",
+          "lineHeight": "1.25rem",
+          "color": "primaryBrandColor"
+        }
+      }
+    },
+    "spacingSystem": {
+      "unit": "rem",
+      "baseUnit": "0.25rem",
+      "spacingScale": {
+        "px": "1px",
+        "xs": "0.25rem",
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem",
+        "2xl": "2.5rem",
+        "3xl": "3rem",
+        "4xl": "4rem"
+      },
+      "componentPadding": {
+        "small": "0.5rem 0.75rem",
+        "medium": "0.75rem 1rem",
+        "large": "1rem 1.25rem"
+      }
+    },
+    "borderRadii": {
+      "small": "0.25rem",
+      "medium": "0.5rem",
+      "large": "0.75rem",
+      "full": "9999px"
+    },
+    "componentStyles": {
+      "buttons": {
+        "primary": {
+          "backgroundColor": "primaryBrandColor",
+          "textColor": "white",
+          "padding": "componentPadding.medium",
+          "borderRadius": "medium",
+          "fontWeight": "600",
+          "hoverEffect": "darkenBackground",
+          "shadow": "light"
+        },
+        "secondary": {
+          "backgroundColor": "transparent",
+          "borderColor": "border",
+          "borderWidth": "1px",
+          "textColor": "textPrimary",
+          "padding": "componentPadding.medium",
+          "borderRadius": "medium",
+          "fontWeight": "600",
+          "hoverEffect": "lightenBackground"
+        },
+        "iconButton": {
+          "size": "2.5rem",
+          "borderRadius": "full",
+          "backgroundColor": "transparent",
+          "hoverEffect": "lightenBackground"
+        }
+      },
+      "inputFields": {
+        "backgroundColor": "white",
+        "borderColor": "border",
+        "borderWidth": "1px",
+        "borderRadius": "medium",
+        "padding": "componentPadding.medium",
+        "textColor": "textPrimary",
+        "placeholderColor": "textPlaceholder",
+        "focusEffect": "borderColor: primaryBrandColor, shadow: primaryBrandColor (subtle)"
+      },
+      "cards": {
+        "backgroundColor": "white",
+        "borderRadius": "large",
+        "shadow": "medium",
+        "padding": "spacingScale.lg"
+      },
+      "tabs": {
+        "inactive": {
+          "textColor": "textSecondary",
+          "fontWeight": "500",
+          "padding": "componentPadding.medium",
+          "hoverEffect": "textColor: textPrimary"
+        },
+        "active": {
+          "textColor": "primaryBrandColor",
+          "fontWeight": "600",
+          "borderBottom": "2px solid primaryBrandColor",
+          "padding": "componentPadding.medium"
+        }
+      },
+      "avatars": {
+        "size": {
+          "small": "1.5rem",
+          "medium": "2rem",
+          "large": "2.5rem"
+        },
+        "borderRadius": "full",
+        "borderColor": "white",
+        "borderWidth": "2px"
+      },
+      "tags": {
+        "backgroundColor": "backgroundDark",
+        "textColor": "textSecondary",
+        "padding": "spacingScale.xs spacingScale.sm",
+        "borderRadius": "small",
+        "fontWeight": "500"
+      },
+      "taskCards": {
+        "backgroundColor": "white",
+        "borderRadius": "medium",
+        "border": "1px solid border",
+        "shadow": "light",
+        "padding": "spacingScale.md",
+        "statusIndicators": {
+          "backgroundColor": {
+            "backlog": "#E2E8F0",
+            "toDo": "#BFDBFE",
+            "inProgress": "#FDE68A",
+            "needReview": "#D1FAE5"
+          },
+          "textColor": {
+            "backlog": "#6B7280",
+            "toDo": "#1D4ED8",
+            "inProgress": "#B45309",
+            "needReview": "#065F46"
+          },
+          "borderRadius": "full",
+          "padding": "spacingScale.xs spacingScale.sm",
+          "fontSize": "0.75rem",
+          "fontWeight": "600"
+        },
+        "priorityLabels": {
+          "backgroundColor": {
+            "high": "#FEE2E2",
+            "medium": "#FEF3C7",
+            "low": "#D1FAE5"
+          },
+          "textColor": {
+            "high": "#DC2626",
+            "medium": "#B45309",
+            "low": "#065F46"
+          },
+          "borderRadius": "full",
+          "padding": "spacingScale.xs spacingScale.sm",
+          "fontSize": "0.75rem",
+          "fontWeight": "600"
+        }
+      }
+    },
+    "layoutPrinciples": {
+      "gridSystem": "Implied 12-column or flexible grid for main content area, with a fixed-width sidebar.",
+      "alignment": "Left-aligned text and components, with some centered elements (e.g., 'Become Pro' section).",
+      "spacingStrategy": "Consistent vertical and horizontal rhythm using a defined spacing scale. Generous use of whitespace for readability.",
+      "componentStacking": "Vertical stacking of elements within cards, horizontal arrangement for navigation and action items."
+    },
+    "iconography": {
+      "style": "Outline, minimalist, consistent line weight.",
+      "color": "textSecondary (default), primaryBrandColor (active/hover)",
+      "size": "1rem - 1.5rem"
+    },
+    "interactionDesign": {
+      "hoverStates": "Subtle background changes, border changes, or text color shifts on interactive elements (buttons, links, menu items).",
+      "activeStates": "Distinct visual cues (e.g., background fill, border highlight) for selected navigation items or tabs.",
+      "shadowsForDepth": "Used to indicate interactive elements (buttons, cards) and separate sections."
+    }
+  }
+  

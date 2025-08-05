@@ -1,0 +1,71 @@
+import type { Task } from '../types'
+
+interface TaskCardProps {
+  task: Task
+  onEdit: (task: Task) => void
+  onDelete: (id: string) => void
+}
+
+export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
+  const getStatusColor = (status: Task['status']) => {
+    switch (status) {
+      case 'To Do': return 'bg-blue-100 text-blue-800'
+      case 'In Progress': return 'bg-yellow-100 text-yellow-800'
+      case 'Done': return 'bg-green-100 text-green-800'
+      default: return 'bg-gray-100 text-gray-800'
+    }
+  }
+
+  const getPriorityColor = (priority: Task['priority']) => {
+    switch (priority) {
+      case 'High': return 'bg-red-100 text-red-800'
+      case 'Medium': return 'bg-yellow-100 text-yellow-800'
+      case 'Low': return 'bg-green-100 text-green-800'
+      default: return 'bg-gray-100 text-gray-800'
+    }
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+      <div className="flex items-start justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">{task.title}</h3>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onEdit(task)}
+            className="text-gray-400 hover:text-blue-600 transition-colors duration-200"
+            aria-label="Edit task"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </button>
+          <button
+            onClick={() => onDelete(task.id)}
+            className="text-gray-400 hover:text-red-600 transition-colors duration-200"
+            aria-label="Delete task"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <p className="text-gray-600 text-sm mb-4 line-clamp-3">{task.description}</p>
+      
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(task.status)}`}>
+            {task.status}
+          </span>
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getPriorityColor(task.priority)}`}>
+            {task.priority}
+          </span>
+        </div>
+        <span className="text-xs text-gray-500">
+          {task.createdAt.toLocaleDateString()}
+        </span>
+      </div>
+    </div>
+  )
+} 
