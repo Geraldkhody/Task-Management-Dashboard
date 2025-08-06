@@ -2,7 +2,11 @@ import { useState } from 'react'
 import type { Task, NewTask } from '../types'
 import { Header, TaskFilters, TaskGrid, TaskModal, AddTaskButton } from '../components'
 
-export function Dashboard() {
+interface DashboardProps {
+  onLogout?: () => void
+}
+
+export function Dashboard({ onLogout }: DashboardProps) {
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: '1',
@@ -33,6 +37,7 @@ export function Dashboard() {
   const [filterStatus, setFilterStatus] = useState<Task['status'] | 'All'>('All')
   const [showAddModal, setShowAddModal] = useState(false)
   const [editingTask, setEditingTask] = useState<Task | null>(null)
+  const [sortBy, setSortBy] = useState<'date' | 'priority' | 'status' | 'title'>('date')
 
   const filteredTasks = filterStatus === 'All' 
     ? tasks 
@@ -73,19 +78,19 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <Header onLogout={onLogout} />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Main Content Header with Add Task Button */}
         <div className="flex items-center justify-between">
           <TaskFilters
             filterStatus={filterStatus}
             onFilterChange={setFilterStatus}
             taskCount={filteredTasks.length}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
           />
           <AddTaskButton onClick={() => setShowAddModal(true)} />
         </div>
-
         
         <TaskGrid
           tasks={filteredTasks}
