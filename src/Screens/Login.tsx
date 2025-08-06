@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react'
 import { Logo } from '../components'
 import type { LoginProps, LoginErrors } from '../types'
 
-export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps) {
-  const navigate = useNavigate()
+export function Login({ onLogin, loading = false }: LoginProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)

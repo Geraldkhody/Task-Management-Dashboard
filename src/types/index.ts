@@ -124,3 +124,18 @@ export interface PasswordStrength {
   color: string
   text: string
 }
+
+// Form Validation Types
+export interface TaskFormData {
+  title: string
+  description: string
+  status: Task['status']
+  priority: Task['priority']
+}
+
+export interface TaskFormErrors {
+  title?: string
+  description?: string
+  status?: string
+  priority?: string
+}

@@ -1,5 +1,5 @@
 import type { Task, TaskFiltersProps } from '../types'
-import { Filter, Grid3X3, List, SortAsc } from 'lucide-react'
+import { Filter, SortAsc } from 'lucide-react'
 
 
 

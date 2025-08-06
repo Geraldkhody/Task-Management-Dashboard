@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Sparkles, Check } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Check } from 'lucide-react'
 import { Logo } from '../components'
 import type { SignupProps, SignupErrors, PasswordStrength } from '../types'
 
-export function Signup({ onSignup, onSwitchToLogin, loading = false }: SignupProps) {
-  const navigate = useNavigate()
+export function Signup({ onSignup, loading = false }: SignupProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -52,10 +51,6 @@ export function Signup({ onSignup, onSwitchToLogin, loading = false }: SignupPro
     if (validateForm()) {
       onSignup(name, email, password)
     }
-  }
-
-  const handleSwitchToLogin = () => {
-    navigate('/login')
   }
 
   const getPasswordStrength = (): PasswordStrength => {
