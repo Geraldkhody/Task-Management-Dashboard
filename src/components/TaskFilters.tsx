@@ -1,13 +1,11 @@
-import type { Task, TaskFiltersProps } from '../types'
-import { Filter, SortAsc } from 'lucide-react'
-
-
+import type { TaskFiltersProps } from '../types';
+import { Filter, SortAsc } from 'lucide-react';
 
 export function TaskFilters({ 
   filterStatus, 
   onFilterChange, 
   taskCount,
-  sortBy = 'date',
+  sortBy = 'userId',
   onSortChange
 }: TaskFiltersProps) {
 
@@ -26,7 +24,7 @@ export function TaskFilters({
 
           {/* Status Filter Tabs */}
           <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-2 py-1 text-xs">
-            {(['All', 'To Do', 'In Progress', 'Done'] as const).map((status) => (
+            {(['All', 'Completed', 'Incomplete'] as const).map((status) => (
               <button
                 key={status}
                 onClick={() => onFilterChange(status)}
@@ -49,13 +47,12 @@ export function TaskFilters({
             <div className="relative">
               <select
                 value={sortBy}
-                onChange={(e) => onSortChange(e.target.value as 'date' | 'priority' | 'status' | 'title')}
+                onChange={(e) => onSortChange(e.target.value as 'userId' | 'completed' | 'todo')}
                 className="appearance-none bg-gray-50 border border-gray-300 rounded-lg px-3 py-1.5 text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-8"
               >
-                <option value="date">Date Created</option>
-                <option value="priority">Priority</option>
-                <option value="status">Status</option>
-                <option value="title">Title</option>
+                <option value="userId">User ID</option>
+                <option value="completed">Status</option>
+                <option value="todo">Title</option>
               </select>
               <SortAsc className="absolute right-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
             </div>
@@ -70,16 +67,15 @@ export function TaskFilters({
           <span className="text-xs font-medium text-gray-600">Filter:</span>
           <select
             value={filterStatus}
-            onChange={(e) => onFilterChange(e.target.value as Task['status'] | 'All')}
+            onChange={(e) => onFilterChange(e.target.value as 'All' | 'Completed' | 'Incomplete')}
             className="flex-1 text-xs border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
             <option value="All">All Tasks</option>
-            <option value="To Do">To Do</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Done">Done</option>
+            <option value="Completed">Completed</option>
+            <option value="Incomplete">Incomplete</option>
           </select>
         </div>
       </div>
     </div>
   )
-} 
+}

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import type { TaskModalProps, TaskFormData } from '../types'
+import type { TaskModalProps, TaskFormData, Task } from '../types'
 import { X, AlertCircle } from 'lucide-react'
 
 export function TaskModal({ isOpen, onClose, onSubmit, task, mode }: TaskModalProps) {
@@ -12,26 +12,20 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, mode }: TaskModalPr
     setValue
   } = useForm<TaskFormData>({
     defaultValues: {
-      title: '',
-      description: '',
-      status: 'To Do',
-      priority: 'Medium'
+      todo: '',
+      completed: false,
     }
   })
 
   useEffect(() => {
     if (isOpen) {
       if (task && mode === 'edit') {
-        setValue('title', task.title)
-        setValue('description', task.description)
-        setValue('status', task.status)
-        setValue('priority', task.priority)
+        setValue('todo', (task as Task).todo);
+        setValue('completed', (task as Task).completed);
       } else {
         reset({
-          title: '',
-          description: '',
-          status: 'To Do',
-          priority: 'Medium'
+          todo: '',
+          completed: false,
         })
       }
     }
@@ -41,7 +35,7 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, mode }: TaskModalPr
     if (mode === 'edit' && task) {
       onSubmit({ ...task, ...data })
     } else {
-      onSubmit(data)
+      onSubmit({ ...data, userId: 1 }) // Assign a default userId for new tasks
     }
     onClose()
     reset()
@@ -66,120 +60,46 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, mode }: TaskModalPr
         </div>
         
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
-          {/* Title Field */}
+          {/* Todo Field */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Title <span className="text-red-500">*</span>
+              Todo <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              {...register('title', {
-                required: 'Title is required',
+              {...register('todo', {
+                required: 'Todo is required',
                 minLength: {
                   value: 3,
-                  message: 'Title must be at least 3 characters long'
+                  message: 'Todo must be at least 3 characters long'
                 },
-                validate: (value) => value.trim().length >= 3 || 'Title must contain at least 3 non-whitespace characters'
+                validate: (value) => value.trim().length >= 3 || 'Todo must contain at least 3 non-whitespace characters'
               })}
               className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 ${
-                errors.title 
+                errors.todo 
                   ? 'border-red-300 bg-red-50 focus:ring-red-500/20 focus:border-red-500' 
                   : 'border-gray-300 bg-gray-50 hover:bg-white'
               }`}
-              placeholder="Enter task title (minimum 3 characters)"
+              placeholder="Enter a new todo (minimum 3 characters)"
             />
-            {errors.title && (
+            {errors.todo && (
               <div className="mt-2 flex items-center gap-1 text-red-600">
                 <AlertCircle className="w-4 h-4" />
-                <span className="text-sm">{errors.title.message}</span>
+                <span className="text-sm">{errors.todo.message}</span>
               </div>
             )}
           </div>
           
-          {/* Description Field */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Description <span className="text-gray-400">(Optional)</span>
+          {/* Completed Field */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              {...register('completed')}
+              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <label className="ml-2 block text-sm text-gray-900">
+              Completed
             </label>
-            <textarea
-              {...register('description', {
-                maxLength: {
-                  value: 200,
-                  message: 'Description cannot exceed 200 characters'
-                }
-              })}
-              className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 resize-none ${
-                errors.description 
-                  ? 'border-red-300 bg-red-50 focus:ring-red-500/20 focus:border-red-500' 
-                  : 'border-gray-300 bg-gray-50 hover:bg-white'
-              }`}
-              rows={3}
-              placeholder="Enter task description (maximum 200 characters)"
-            />
-            {errors.description && (
-              <div className="mt-2 flex items-center gap-1 text-red-600">
-                <AlertCircle className="w-4 h-4" />
-                <span className="text-sm">{errors.description.message}</span>
-              </div>
-            )}
-            <div className="mt-1 text-xs text-gray-500">
-              Maximum 200 characters
-            </div>
-          </div>
-          
-          {/* Status and Priority Fields */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Status <span className="text-red-500">*</span>
-              </label>
-              <select
-                {...register('status', {
-                  required: 'Status is required'
-                })}
-                className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 ${
-                  errors.status 
-                    ? 'border-red-300 bg-red-50 focus:ring-red-500/20 focus:border-red-500' 
-                    : 'border-gray-300 bg-gray-50 hover:bg-white'
-                }`}
-              >
-                <option value="To Do">To Do</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Done">Done</option>
-              </select>
-              {errors.status && (
-                <div className="mt-2 flex items-center gap-1 text-red-600">
-                  <AlertCircle className="w-4 h-4" />
-                  <span className="text-sm">{errors.status.message}</span>
-                </div>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Priority <span className="text-red-500">*</span>
-              </label>
-              <select
-                {...register('priority', {
-                  required: 'Priority is required'
-                })}
-                className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 ${
-                  errors.priority 
-                    ? 'border-red-300 bg-red-50 focus:ring-red-500/20 focus:border-red-500' 
-                    : 'border-gray-300 bg-gray-50 hover:bg-white'
-                }`}
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-              {errors.priority && (
-                <div className="mt-2 flex items-center gap-1 text-red-600">
-                  <AlertCircle className="w-4 h-4" />
-                  <span className="text-sm">{errors.priority.message}</span>
-                </div>
-              )}
-            </div>
           </div>
           
           {/* Form Actions */}
@@ -214,4 +134,4 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, mode }: TaskModalPr
       </div>
     </div>
   )
-} 
+}

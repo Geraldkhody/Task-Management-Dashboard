@@ -1,98 +1,70 @@
-import { useState } from 'react'
-import type { Task, NewTask, DashboardProps } from '../types'
-import { Header, TaskFilters, TaskGrid, TaskModal, AddTaskButton } from '../components'
+import { useState, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import type { Task, NewTask, DashboardProps } from '../types';
+import { Header, TaskFilters, TaskGrid, TaskModal, AddTaskButton } from '../components';
+import { useTasks } from '../hooks/useTasks';
+import { addNewTask, updateExistingTask, deleteExistingTask } from '../store/taskSlice';
+import type { AppDispatch } from '../store/store';
 
 export function Dashboard({ onLogout }: DashboardProps) {
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: '1',
-      title: 'Complete project documentation',
-      description: 'Write comprehensive documentation for the new feature',
-      status: 'In Progress',
-      priority: 'High',
-      createdAt: new Date('2024-01-15')
-    },
-    {
-      id: '2',
-      title: 'Review code changes',
-      description: 'Review pull requests and provide feedback',
-      status: 'To Do',
-      priority: 'Medium',
-      createdAt: new Date('2024-01-16')
-    },
-    {
-      id: '3',
-      title: 'Setup development environment',
-      description: 'Install and configure all necessary tools',
-      status: 'Done',
-      priority: 'Low',
-      createdAt: new Date('2024-01-14')
-    }
-  ])
+  const { tasks, loading, error } = useTasks();
+  const dispatch = useDispatch<AppDispatch>();
+  const [filterStatus, setFilterStatus] = useState<'All' | 'Completed' | 'Incomplete'>('All');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [sortBy, setSortBy] = useState<'userId' | 'completed' | 'todo'>('userId');
 
-  const [filterStatus, setFilterStatus] = useState<Task['status'] | 'All'>('All')
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [editingTask, setEditingTask] = useState<Task | null>(null)
-  const [sortBy, setSortBy] = useState<'date' | 'priority' | 'status' | 'title'>('date')
+  const filteredTasks = useMemo(() => {
+    if (filterStatus === 'All') {
+      return tasks;
+    }
+    const isCompleted = filterStatus === 'Completed';
+    return tasks.filter((task) => task.completed === isCompleted);
+  }, [tasks, filterStatus]);
 
-  const filteredTasks = filterStatus === 'All' 
-    ? tasks 
-    : tasks.filter(task => task.status === filterStatus)
-
-  const sortedTasks = [...filteredTasks].sort((a, b) => {
-    if (sortBy === 'date') {
-      return b.createdAt.getTime() - a.createdAt.getTime();
-    }
-    if (sortBy === 'priority') {
-      const priorityOrder = { High: 3, Medium: 2, Low: 1 };
-      return priorityOrder[b.priority] - priorityOrder[a.priority];
-    }
-    if (sortBy === 'status') {
-      return a.status.localeCompare(b.status);
-    }
-    if (sortBy === 'title') {
-      return a.title.localeCompare(b.title);
-    }
-    return 0;
-  });
+  const sortedTasks = useMemo(() => {
+    return [...filteredTasks].sort((a, b) => {
+      if (sortBy === 'userId') {
+        return a.userId - b.userId;
+      }
+      if (sortBy === 'completed') {
+        return a.completed === b.completed ? 0 : a.completed ? -1 : 1;
+      }
+      if (sortBy === 'todo') {
+        return a.todo.localeCompare(b.todo);
+      }
+      return 0;
+    });
+  }, [filteredTasks, sortBy]);
 
   const handleAddTask = (newTask: NewTask) => {
-    const task: Task = {
-      id: Date.now().toString(),
-      ...newTask,
-      createdAt: new Date()
-    }
-    setTasks([...tasks, task])
-  }
+    dispatch(addNewTask(newTask));
+  };
 
   const handleUpdateTask = (updatedTask: Task) => {
-    setTasks(tasks.map(task => 
-      task.id === updatedTask.id ? updatedTask : task
-    ))
-  }
+    dispatch(updateExistingTask(updatedTask));
+  };
 
-  const handleDeleteTask = (id: string) => {
-    setTasks(tasks.filter(task => task.id !== id))
-  }
+  const handleDeleteTask = (id: number) => {
+    dispatch(deleteExistingTask(id));
+  };
 
   const handleEditTask = (task: Task) => {
-    setEditingTask(task)
-  }
+    setEditingTask(task);
+  };
 
   const handleModalSubmit = (task: NewTask | Task) => {
     if ('id' in task) {
-      // Editing existing task
-      handleUpdateTask(task)
+      handleUpdateTask(task);
     } else {
-      // Adding new task
-      handleAddTask(task)
+      handleAddTask(task);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header onLogout={onLogout} />
-      
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between">
           <TaskFilters
@@ -104,17 +76,20 @@ export function Dashboard({ onLogout }: DashboardProps) {
           />
           <AddTaskButton onClick={() => setShowAddModal(true)} />
         </div>
-        
-        <TaskGrid
-          tasks={sortedTasks}
-          onEdit={handleEditTask}
-          onDelete={handleDeleteTask}
-          onAddTask={() => setShowAddModal(true)}
-          filterStatus={filterStatus}
-        />
+
+        {loading && <p>Loading tasks...</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        {!loading && !error && (
+          <TaskGrid
+            tasks={sortedTasks}
+            onEdit={handleEditTask}
+            onDelete={handleDeleteTask}
+            onAddTask={() => setShowAddModal(true)}
+            filterStatus={filterStatus}
+          />
+        )}
       </main>
 
-      {/* Add Task Modal */}
       <TaskModal
         isOpen={showAddModal}
         onClose={() => setShowAddModal(false)}
@@ -122,7 +97,6 @@ export function Dashboard({ onLogout }: DashboardProps) {
         mode="add"
       />
 
-      {/* Edit Task Modal */}
       <TaskModal
         isOpen={!!editingTask}
         onClose={() => setEditingTask(null)}
@@ -131,5 +105,5 @@ export function Dashboard({ onLogout }: DashboardProps) {
         mode="edit"
       />
     </div>
-  )
-} 
+  );
+}
