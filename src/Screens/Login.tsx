@@ -1,42 +1,44 @@
-import { useState } from 'react'
-import { Eye, EyeOff, User, Lock, ArrowRight } from 'lucide-react'
-import { Logo } from '../components'
-import type { LoginProps, LoginErrors } from '../types'
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Eye, EyeOff, User, Lock, ArrowRight } from 'lucide-react';
+import { Logo } from '../components';
+import type { LoginProps, LoginErrors } from '../types';
+import { login } from '../store/authSlice';
+import type { RootState, AppDispatch } from '../store/store';
 
-export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps) {
-  const [_username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [errors, setErrors] = useState<LoginErrors>({})
+export function Login({ onSwitchToSignup }: LoginProps) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<LoginErrors>({});
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading } = useSelector((state: RootState) => state.auth);
 
   const validateForm = () => {
-    const newErrors: LoginErrors = {}
+    const newErrors: LoginErrors = {};
 
-    if (!_username) {
-      newErrors.username = 'Username is required'
+    if (!username) {
+      newErrors.username = 'Username is required';
     }
 
     if (!password) {
-      newErrors.password = 'Password is required'
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters'
+      newErrors.password = 'Password is required';
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (validateForm()) {
-      onLogin(_username, password)
+      dispatch(login({ username, password }));
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <Logo />
@@ -44,13 +46,13 @@ export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
           <p className="text-gray-600">Sign in to your TaskFlow account</p>
         </div>
-
-        {/* Login Form */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-200/60 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Username Field */}
             <div>
-              <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="username"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Username
               </label>
               <div className="relative">
@@ -60,7 +62,7 @@ export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps
                 <input
                   id="username"
                   type="text"
-                  value={_username}
+                  value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className={`w-full pl-10 pr-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 ${
                     errors.username ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-gray-50 hover:bg-white'
@@ -72,10 +74,11 @@ export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps
                 <p className="mt-1 text-sm text-red-600">{errors.username}</p>
               )}
             </div>
-
-            {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Password
               </label>
               <div className="relative">
@@ -97,16 +100,17 @@ export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
               </div>
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password}</p>
               )}
             </div>
-
-
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -124,9 +128,6 @@ export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps
               )}
             </button>
           </form>
-
-
-          {/* Sign Up Link */}
           <div className="mt-8 text-center">
             <p className="text-gray-600">
               Don't have an account?{' '}
@@ -142,5 +143,5 @@ export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}

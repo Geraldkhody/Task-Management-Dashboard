@@ -2,11 +2,18 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Dashboard, Login, Signup } from '../Screens';
 import { ProtectedRoute } from './ProtectedRoute';
 import { AuthRoute } from './AuthRoute';
-import { useAuth } from '../hooks/useAuth';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '../store/store';
+import { logout } from '../store/authSlice';
 
 export function AppRoutes() {
-  const { isAuthenticated, loading, login, signup, logout } = useAuth();
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <Routes>
@@ -15,9 +22,7 @@ export function AppRoutes() {
         element={
           <AuthRoute isAuthenticated={isAuthenticated}>
             <Login 
-              onLogin={login}
               onSwitchToSignup={() => navigate('/signup')}
-              loading={loading}
             />
           </AuthRoute>
         } 
@@ -28,9 +33,8 @@ export function AppRoutes() {
         element={
           <AuthRoute isAuthenticated={isAuthenticated}>
             <Signup 
-              onSignup={signup}
+              onSignup={() => {}}
               onSwitchToLogin={() => navigate('/login')}
-              loading={loading}
             />
           </AuthRoute>
         } 
@@ -40,7 +44,7 @@ export function AppRoutes() {
         path="/dashboard" 
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Dashboard onLogout={logout} />
+            <Dashboard onLogout={handleLogout} />
           </ProtectedRoute>
         } 
       />

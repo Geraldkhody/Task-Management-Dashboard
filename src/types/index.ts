@@ -73,9 +73,7 @@ export interface User {
 
 // Authentication Types
 export interface LoginProps {
-  onLogin: (username: string, password: string) => void
-  onSwitchToSignup: () => void
-  loading?: boolean
+  onSwitchToSignup: () => void;
 }
 
 export interface SignupProps {
