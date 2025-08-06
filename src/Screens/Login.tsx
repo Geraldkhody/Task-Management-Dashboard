@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react'
+import { Eye, EyeOff, User, Lock, ArrowRight } from 'lucide-react'
 import { Logo } from '../components'
 import type { LoginProps, LoginErrors } from '../types'
 
-export function Login({ onLogin, loading = false }: LoginProps) {
-  const [email, setEmail] = useState('')
+export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps) {
+  const [_username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState<LoginErrors>({})
@@ -13,10 +12,8 @@ export function Login({ onLogin, loading = false }: LoginProps) {
   const validateForm = () => {
     const newErrors: LoginErrors = {}
 
-    if (!email) {
-      newErrors.email = 'Email is required'
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Please enter a valid email'
+    if (!_username) {
+      newErrors.username = 'Username is required'
     }
 
     if (!password) {
@@ -32,7 +29,7 @@ export function Login({ onLogin, loading = false }: LoginProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
-      onLogin(email, password)
+      onLogin(_username, password)
     }
   }
 
@@ -51,28 +48,28 @@ export function Login({ onLogin, loading = false }: LoginProps) {
         {/* Login Form */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-200/60 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email Field */}
+            {/* Username Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                Email Address
+              <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
+                Username
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <User className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="username"
+                  type="text"
+                  value={_username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className={`w-full pl-10 pr-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 ${
-                    errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-gray-50 hover:bg-white'
+                    errors.username ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-gray-50 hover:bg-white'
                   }`}
-                  placeholder="Enter your email"
+                  placeholder="Enter your username"
                 />
               </div>
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              {errors.username && (
+                <p className="mt-1 text-sm text-red-600">{errors.username}</p>
               )}
             </div>
 
@@ -133,12 +130,13 @@ export function Login({ onLogin, loading = false }: LoginProps) {
           <div className="mt-8 text-center">
             <p className="text-gray-600">
               Don't have an account?{' '}
-              <Link
-                to="/signup"
+              <button
+                type="button"
+                onClick={onSwitchToSignup}
                 className="text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-200"
               >
                 Sign up
-              </Link>
+              </button>
             </p>
           </div>
         </div>

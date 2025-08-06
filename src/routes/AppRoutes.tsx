@@ -1,20 +1,22 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { Dashboard, Login, Signup } from '../Screens'
-import { ProtectedRoute } from './ProtectedRoute'
-import { AuthRoute } from './AuthRoute'
-import type { AppRoutesProps } from '../types'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Dashboard, Login, Signup } from '../Screens';
+import { ProtectedRoute } from './ProtectedRoute';
+import { AuthRoute } from './AuthRoute';
+import { useAuth } from '../hooks/useAuth';
 
-export function AppRoutes({ isAuthenticated, loading, onLogin, onSignup, onLogout }: AppRoutesProps) {
+export function AppRoutes() {
+  const { isAuthenticated, loading, login, signup, logout } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <Routes>
-      {/* Public Authentication Routes */}
       <Route 
         path="/login" 
         element={
           <AuthRoute isAuthenticated={isAuthenticated}>
             <Login 
-              onLogin={onLogin}
-              onSwitchToSignup={() => {}}
+              onLogin={login}
+              onSwitchToSignup={() => navigate('/signup')}
               loading={loading}
             />
           </AuthRoute>
@@ -26,25 +28,23 @@ export function AppRoutes({ isAuthenticated, loading, onLogin, onSignup, onLogou
         element={
           <AuthRoute isAuthenticated={isAuthenticated}>
             <Signup 
-              onSignup={onSignup}
-              onSwitchToLogin={() => {}}
+              onSignup={signup}
+              onSwitchToLogin={() => navigate('/login')}
               loading={loading}
             />
           </AuthRoute>
         } 
       />
-
-      {/* Protected Application Routes */}
+      
       <Route 
         path="/dashboard" 
         element={
           <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Dashboard onLogout={onLogout} />
+            <Dashboard onLogout={logout} />
           </ProtectedRoute>
         } 
       />
 
-      {/* Root Route - Redirect based on auth status */}
       <Route 
         path="/" 
         element={
@@ -56,13 +56,10 @@ export function AppRoutes({ isAuthenticated, loading, onLogin, onSignup, onLogou
         } 
       />
 
-      {/* Catch-all Route - Redirect to appropriate page */}
       <Route 
         path="*" 
-        element={
-          <Navigate to="/" replace />
-        } 
+        element={<Navigate to="/" replace />} 
       />
     </Routes>
-  )
+  );
 }

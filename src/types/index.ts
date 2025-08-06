@@ -60,9 +60,20 @@ export interface HeaderProps {
   onLogout?: () => void
 }
 
+// User Types
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  image: string;
+}
+
 // Authentication Types
 export interface LoginProps {
-  onLogin: (email: string, password: string) => void
+  onLogin: (username: string, password: string) => void
   onSwitchToSignup: () => void
   loading?: boolean
 }
@@ -74,9 +85,11 @@ export interface SignupProps {
 }
 
 export interface UseAuthReturn {
+  user: User | null
+  token: string | null
   isAuthenticated: boolean
   loading: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (username: string, password: string) => Promise<void>
   signup: (name: string, email: string, password: string) => Promise<void>
   logout: () => void
 }
@@ -92,14 +105,6 @@ export interface AuthRouteProps {
   isAuthenticated: boolean
 }
 
-export interface AppRoutesProps {
-  isAuthenticated: boolean
-  loading: boolean
-  onLogin: (email: string, password: string) => Promise<void>
-  onSignup: (name: string, email: string, password: string) => Promise<void>
-  onLogout: () => void
-}
-
 // Screen Types
 export interface DashboardProps {
   onLogout?: () => void
@@ -107,7 +112,7 @@ export interface DashboardProps {
 
 // Form Error Types
 export interface LoginErrors {
-  email?: string
+  username?: string
   password?: string
 }
 
