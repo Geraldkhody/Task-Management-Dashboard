@@ -39,6 +39,23 @@ export function Dashboard({ onLogout }: DashboardProps) {
     ? tasks 
     : tasks.filter(task => task.status === filterStatus)
 
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+    if (sortBy === 'date') {
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    }
+    if (sortBy === 'priority') {
+      const priorityOrder = { High: 3, Medium: 2, Low: 1 };
+      return priorityOrder[b.priority] - priorityOrder[a.priority];
+    }
+    if (sortBy === 'status') {
+      return a.status.localeCompare(b.status);
+    }
+    if (sortBy === 'title') {
+      return a.title.localeCompare(b.title);
+    }
+    return 0;
+  });
+
   const handleAddTask = (newTask: NewTask) => {
     const task: Task = {
       id: Date.now().toString(),
@@ -89,7 +106,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
         </div>
         
         <TaskGrid
-          tasks={filteredTasks}
+          tasks={sortedTasks}
           onEdit={handleEditTask}
           onDelete={handleDeleteTask}
           onAddTask={() => setShowAddModal(true)}

@@ -10,10 +10,6 @@ export function TaskFilters({
   sortBy = 'date',
   onSortChange
 }: TaskFiltersProps) {
-  const getStatusCount = (status: Task['status']) => {
-    // This would be calculated from actual task data
-    return Math.floor(Math.random() * 10) + 1
-  }
 
   return (
     <div className="bg-white rounded-lg border text-sm border-gray-200 p-3 mb-6">
@@ -41,11 +37,6 @@ export function TaskFilters({
                 }`}
               >
                 {status}
-                {status !== 'All' && (
-                  <span className="ml-1 text-xs text-gray-400">
-                    ({getStatusCount(status)})
-                  </span>
-                )}
               </button>
             ))}
           </div>
