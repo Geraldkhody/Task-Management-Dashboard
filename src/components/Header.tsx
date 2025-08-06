@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { Search, User, LogOut } from 'lucide-react'
 import { Logo } from './Logo'
-
-interface HeaderProps {
-  onLogout?: () => void
-}
+import type { HeaderProps } from '../types'
 
 export function Header({ onLogout }: HeaderProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)

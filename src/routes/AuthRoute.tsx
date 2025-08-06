@@ -1,9 +1,5 @@
 import { Navigate } from 'react-router-dom'
-
-interface AuthRouteProps {
-  children: React.ReactNode
-  isAuthenticated: boolean
-}
+import type { AuthRouteProps } from '../types'
 
 export function AuthRoute({ children, isAuthenticated }: AuthRouteProps) {
   if (isAuthenticated) {

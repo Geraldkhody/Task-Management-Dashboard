@@ -1,15 +1,7 @@
-import type { Task } from '../types'
+import type { Task, TaskFiltersProps } from '../types'
 import { Filter, Grid3X3, List, SortAsc } from 'lucide-react'
 
-interface TaskFiltersProps {
-  filterStatus: Task['status'] | 'All'
-  onFilterChange: (status: Task['status'] | 'All') => void
-  taskCount: number
-  viewMode?: 'grid' | 'list'
-  onViewModeChange?: (mode: 'grid' | 'list') => void
-  sortBy?: 'date' | 'priority' | 'status' | 'title'
-  onSortChange?: (sort: 'date' | 'priority' | 'status' | 'title') => void
-}
+
 
 export function TaskFilters({ 
   filterStatus, 

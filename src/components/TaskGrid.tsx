@@ -1,15 +1,9 @@
-import type { Task } from '../types'
+import type { TaskGridProps } from '../types'
 import { TaskCard } from './TaskCard'
 import { AddTaskButton } from './AddTaskButton'
 import { ClipboardList } from 'lucide-react'
 
-interface TaskGridProps {
-  tasks: Task[]
-  onEdit: (task: Task) => void
-  onDelete: (id: string) => void
-  onAddTask: () => void
-  filterStatus: Task['status'] | 'All'
-}
+
 
 export function TaskGrid({ tasks, onEdit, onDelete, onAddTask, filterStatus }: TaskGridProps) {
   if (tasks.length === 0) {

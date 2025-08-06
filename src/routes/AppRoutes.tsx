@@ -2,14 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { Dashboard, Login, Signup } from '../Screens'
 import { ProtectedRoute } from './ProtectedRoute'
 import { AuthRoute } from './AuthRoute'
-
-interface AppRoutesProps {
-  isAuthenticated: boolean
-  loading: boolean
-  onLogin: (email: string, password: string) => Promise<void>
-  onSignup: (name: string, email: string, password: string) => Promise<void>
-  onLogout: () => void
-}
+import type { AppRoutesProps } from '../types'
 
 export function AppRoutes({ isAuthenticated, loading, onLogin, onSignup, onLogout }: AppRoutesProps) {
   return (

@@ -1,12 +1,5 @@
 import { Plus } from 'lucide-react'
-
-interface AddTaskButtonProps {
-  onClick: () => void
-  variant?: 'primary' | 'secondary'
-  size?: 'sm' | 'md' | 'lg'
-  className?: string
-  showText?: boolean
-}
+import type { AddTaskButtonProps } from '../types'
 
 export function AddTaskButton({ 
   onClick, 

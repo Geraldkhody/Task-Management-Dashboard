@@ -1,11 +1,7 @@
-import type { Task } from '../types'
+import type { Task, TaskCardProps } from '../types'
 import { Edit, Trash2 } from 'lucide-react'
 
-interface TaskCardProps {
-  task: Task
-  onEdit: (task: Task) => void
-  onDelete: (id: string) => void
-}
+
 
 export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
   const getStatusColor = (status: Task['status']) => {

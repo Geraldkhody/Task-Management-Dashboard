@@ -2,12 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Sparkles, Check } from 'lucide-react'
 import { Logo } from '../components'
-
-interface SignupProps {
-  onSignup: (name: string, email: string, password: string) => void
-  onSwitchToLogin: () => void
-  loading?: boolean
-}
+import type { SignupProps, SignupErrors, PasswordStrength } from '../types'
 
 export function Signup({ onSignup, onSwitchToLogin, loading = false }: SignupProps) {
   const navigate = useNavigate()
@@ -17,10 +12,10 @@ export function Signup({ onSignup, onSwitchToLogin, loading = false }: SignupPro
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; confirmPassword?: string }>({})
+  const [errors, setErrors] = useState<SignupErrors>({})
 
   const validateForm = () => {
-    const newErrors: { name?: string; email?: string; password?: string; confirmPassword?: string } = {}
+    const newErrors: SignupErrors = {}
 
     if (!name.trim()) {
       newErrors.name = 'Name is required'
@@ -63,7 +58,7 @@ export function Signup({ onSignup, onSwitchToLogin, loading = false }: SignupPro
     navigate('/login')
   }
 
-  const getPasswordStrength = () => {
+  const getPasswordStrength = (): PasswordStrength => {
     if (!password) return { strength: 0, color: 'bg-gray-200', text: '' }
     if (password.length < 8) return { strength: 1, color: 'bg-red-500', text: 'Weak' }
     if (password.length >= 8 && !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {

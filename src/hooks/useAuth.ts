@@ -1,12 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-
-interface UseAuthReturn {
-  isAuthenticated: boolean
-  loading: boolean
-  login: (email: string, password: string) => Promise<void>
-  signup: (name: string, email: string, password: string) => Promise<void>
-  logout: () => void
-}
+import type { UseAuthReturn } from '../types'
 
 export function useAuth(): UseAuthReturn {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {

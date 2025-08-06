@@ -1,10 +1,6 @@
 import { useState } from 'react'
-import type { Task, NewTask } from '../types'
+import type { Task, NewTask, DashboardProps } from '../types'
 import { Header, TaskFilters, TaskGrid, TaskModal, AddTaskButton } from '../components'
-
-interface DashboardProps {
-  onLogout?: () => void
-}
 
 export function Dashboard({ onLogout }: DashboardProps) {
   const [tasks, setTasks] = useState<Task[]>([

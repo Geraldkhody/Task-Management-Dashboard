@@ -1,14 +1,6 @@
 import { useState, useEffect } from 'react'
-import type { Task, NewTask } from '../types'
+import type { Task, NewTask, TaskModalProps } from '../types'
 import { X } from 'lucide-react'
-
-interface TaskModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onSubmit: (task: NewTask | Task) => void
-  task?: Task | null
-  mode: 'add' | 'edit'
-}
 
 export function TaskModal({ isOpen, onClose, onSubmit, task, mode }: TaskModalProps) {
   const [formData, setFormData] = useState<NewTask>({

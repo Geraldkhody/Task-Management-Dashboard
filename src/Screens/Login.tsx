@@ -2,22 +2,17 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles } from 'lucide-react'
 import { Logo } from '../components'
-
-interface LoginProps {
-  onLogin: (email: string, password: string) => void
-  onSwitchToSignup: () => void
-  loading?: boolean
-}
+import type { LoginProps, LoginErrors } from '../types'
 
 export function Login({ onLogin, onSwitchToSignup, loading = false }: LoginProps) {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
+  const [errors, setErrors] = useState<LoginErrors>({})
 
   const validateForm = () => {
-    const newErrors: { email?: string; password?: string } = {}
+    const newErrors: LoginErrors = {}
 
     if (!email) {
       newErrors.email = 'Email is required'
