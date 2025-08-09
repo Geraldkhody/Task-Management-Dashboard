@@ -10,7 +10,7 @@ Currently, two official plugins are available:
 ## Login Credencials
 Username: emilys
 
-Password: emilyspass
+Password: emilyspass 
 
 ## Expanding the ESLint configuration
 
